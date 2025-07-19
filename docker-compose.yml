@@ -1,0 +1,17 @@
+# Versi file docker-compose
+version: "3.8"
+
+# Daftar layanan atau "kapsul" yang akan kita jalankan
+services:
+  # Nama layanan kita, sebut saja 'app'
+  app:
+    # Perintahkan untuk membangun image dari Dockerfile di direktori ini
+    build: .
+    # Selalu restart kapsul ini jika mati atau server reboot
+    restart: always
+    # Petakan port 1412 di VPS ke port 1412 di dalam kapsul
+    ports:
+      - "1412:1412"
+    # Hubungkan file credentials.json di VPS ke dalam kapsul
+    volumes:
+      - ./credentials.json:/app/credentials.json
