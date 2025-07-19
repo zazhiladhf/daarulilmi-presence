@@ -92,6 +92,6 @@ func main() {
 		return c.Render(http.StatusOK, "dashboard_walikelas.html", dataSiswa)
 	})
 
-	log.Println("Server berjalan di http://localhost:8080")
-	e.Logger.Fatal(e.Start(":8080"))
+	log.Println("Server berjalan di http://localhost:1412")
+	e.Logger.Fatal(e.Start(":1412"))
 }
