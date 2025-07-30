@@ -1,0 +1,1 @@
+import"../chunks/DsnmJJEf.js";import"../chunks/DlWC4716.js";import{b as o,a as t,n as e}from"../chunks/DVhLo0Kx.js";var i=o("<h1>Halaman Kelola Izin</h1> <p>Konten untuk mengelola izin akan ada di sini.</p>",1);function l(a){var n=i();e(2),t(a,n)}export{l as component};
