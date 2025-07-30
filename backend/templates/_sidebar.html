@@ -1,0 +1,45 @@
+<div class="sidebar d-flex flex-column flex-shrink-0 p-3" id="sidebarMenu">
+  <a
+    href="/dashboard"
+    class="d-flex align-items-center mb-3 link-dark text-decoration-none"
+  >
+    <span class="fs-4 fw-semibold">{{.SchoolName}}</span>
+  </a>
+  <hr />
+  <ul class="nav nav-pills flex-column mb-auto">
+    <li class="nav-item">
+      <a href="/dashboard" class="nav-link active"
+        ><i class="bi bi-speedometer2"></i> Dashboard</a
+      >
+    </li>
+    <li>
+      <a href="/admin/siswa" class="nav-link"
+        ><i class="bi bi-people"></i> Manajemen Siswa</a
+      >
+    </li>
+    <li>
+      <a href="/admin/izin" class="nav-link"
+        ><i class="bi bi-journal-check"></i> Kelola Izin</a
+      >
+    </li>
+  </ul>
+  <hr />
+  <div class="dropdown">
+    <a
+      href="#"
+      class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="bi bi-person-circle fs-2 me-2"></i>
+      <strong id="user-display-name-sidebar">...</strong>
+    </a>
+    <ul class="dropdown-menu text-small shadow">
+      <li><a class="dropdown-item" href="#">Pengaturan</a></li>
+      <li><hr class="dropdown-divider" /></li>
+      <li>
+        <a class="dropdown-item" href="#" id="logout-button-sidebar">Logout</a>
+      </li>
+    </ul>
+  </div>
+</div>

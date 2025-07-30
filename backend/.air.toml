@@ -1,0 +1,27 @@
+# file: .air.toml (Versi Final Paling Stabil)
+
+root = "."
+tmp_dir = "tmp"
+
+[build]
+# Perintah sekarang langsung menjalankan file main.go kita.
+# Air akan menangani kompilasi di latar belakang.
+cmd = "go run ./cmd/web/main.go"
+
+# Kita tidak lagi butuh bin dan full_bin karena cmd sudah menjadi perintah eksekusi.
+bin = ""
+full_bin = ""
+
+# Beri sedikit waktu agar proses build selesai sebelum dijalankan ulang
+delay = 1000 # ms
+
+# Ekstensi file yang akan ditonton
+include_ext = ["go", "tpl", "tmpl", "html"]
+# Direktori yang diabaikan
+exclude_dir = ["assets", "tmp", "vendor"]
+# Log build
+log = "air_build.log"
+
+[log]
+# Tampilkan waktu di log
+time = true

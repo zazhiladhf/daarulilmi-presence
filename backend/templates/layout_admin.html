@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{block "title" .}}Dashboard{{end}} - {{.SchoolName}}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <style>
+      :root {
+        --sidebar-width: 280px;
+      }
+      body {
+        background-color: #f4f7f6;
+      }
+      .main-container {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: var(--sidebar-width);
+        flex-shrink: 0;
+        background-color: #fff;
+        border-right: 1px solid #dee2e6;
+      }
+      .sidebar .nav-link {
+        color: #333;
+        font-weight: 500;
+        border-radius: 0.375rem;
+      }
+      .sidebar .nav-link:hover {
+        background-color: #e9ecef;
+      }
+      .sidebar .nav-link.active {
+        background-color: #0d6efd;
+        color: white;
+      }
+      .sidebar .nav-link .bi {
+        margin-right: 0.75rem;
+      }
+      .content {
+        flex-grow: 1;
+        width: calc(100% - var(--sidebar-width));
+        display: flex;
+        flex-direction: column;
+      }
+      .main-header {
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+      .dropdown-toggle::after {
+        display: none;
+      }
+      .page-content {
+        flex-grow: 1;
+      }
+
+      /* Tampilan Mobile */
+      @media (max-width: 991.98px) {
+        .sidebar {
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          z-index: 1045;
+          transform: translateX(-100%);
+          transition: transform 0.3s ease-in-out;
+        }
+        .sidebar.show {
+          transform: translateX(0);
+        }
+        .content {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div
+        class="sidebar d-flex flex-column flex-shrink-0 p-3"
+        id="sidebarMenu"
+      >
+        <a
+          href="/dashboard"
+          class="d-flex align-items-center mb-3 link-dark text-decoration-none"
+        >
+          <span class="fs-4 fw-semibold">{{.SchoolName}}</span>
+        </a>
+        <hr />
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <a href="/dashboard" class="nav-link active"
+              ><i class="bi bi-speedometer2"></i> Dashboard</a
+            >
+          </li>
+          <li>
+            <a href="/admin/siswa" class="nav-link"
+              ><i class="bi bi-people"></i> Manajemen Siswa</a
+            >
+          </li>
+          <li>
+            <a href="/admin/izin" class="nav-link"
+              ><i class="bi bi-journal-check"></i> Kelola Izin</a
+            >
+          </li>
+        </ul>
+        <hr />
+        <div class="dropdown">
+          <a
+            href="#"
+            class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-person-circle fs-2 me-2"></i>
+            <strong id="user-display-name-sidebar">...</strong>
+          </a>
+          <ul class="dropdown-menu text-small shadow">
+            <li><a class="dropdown-item" href="#">Pengaturan</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="#" id="logout-button-sidebar"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="content">
+        <nav class="navbar navbar-light bg-white main-header p-3">
+          <button
+            class="btn btn-light d-lg-none"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#sidebarMenu"
+            aria-controls="sidebarMenu"
+          >
+            <i class="bi bi-list"></i>
+          </button>
+          <div class="ms-auto dropdown">
+            <a
+              href="#"
+              class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <strong id="user-display-name-header" class="me-2">...</strong>
+              <i class="bi bi-person-circle fs-4"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end text-small shadow">
+              <li><a class="dropdown-item" href="#">Pengaturan</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li>
+                <a class="dropdown-item" href="#" id="logout-button-header"
+                  >Logout</a
+                >
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main class="page-content p-4">{{block "content" .}}{{end}}</main>
+
+        <footer class="footer mt-auto py-3 bg-white border-top">
+          <div class="container-fluid text-center">
+            <span class="text-muted"
+              >&copy; {{.CurrentYear}} {{.SchoolName}}.</span
+            >
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('jwt_token');
+
+            // Fungsi logout untuk kedua tombol
+            function handleLogout(e) {
+                e.preventDefault();
+                localStorage.removeItem('jwt_token');
+                window.location.href = '/';
+            }
+            document.getElementById('logout-button-header')?.addEventListener('click', handleLogout);
+            document.getElementById('logout-button-sidebar')?.addEventListener('click', handleLogout);
+
+            // Jika tidak ada token, langsung redirect (berlaku untuk semua halaman)
+            if (!token) {
+                // Pengecualian untuk halaman publik agar tidak redirect loop
+                const publicPaths = ['/', '/login', '/register', '/forgot-password', '/reset-password'];
+                if (!publicPaths.includes(window.location.pathname)) {
+                    window.location.href = '/';
+                }
+                return;
+            }
+
+            // Ambil username dari token untuk ditampilkan di header/sidebar
+            // Ini akan berjalan di semua halaman yang menggunakan layout ini
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const username = payload.username;
+                const userDisplayHeader = document.getElementById('user-display-name-header');
+                const userDisplaySidebar = document.getElementById('user-display-name-sidebar');
+                if (userDisplayHeader) userDisplayHeader.innerText = username;
+                if (userDisplaySidebar) userDisplaySidebar.innerText = username;
+            } catch (e) {
+                console.error("Gagal parse token:", e);
+                // Jika token rusak, hapus dan redirect
+                localStorage.removeItem('jwt_token');
+                window.location.href = '/';
+            }
+        });
+    </script>
+</body>
+</html>
+  </body>
+</html>

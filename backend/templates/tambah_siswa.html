@@ -1,0 +1,124 @@
+{{template "layout_admin.html" .}} {{define "title"}}Tambah Siswa Baru{{end}}
+{{define "content"}}
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">Tambah Siswa Baru</h1>
+  <a href="/admin/siswa" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left"></i> Kembali ke Daftar Siswa
+  </a>
+</div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div
+          id="error-message"
+          class="alert alert-danger d-none"
+          role="alert"
+        ></div>
+
+        <form id="tambah-siswa-form">
+          <div class="mb-3">
+            <label for="nisn" class="form-label">NISN</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nisn"
+              name="nisn"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nama_lengkap"
+              name="nama_lengkap"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="kelas" class="form-label">Kelas</label>
+            <input
+              type="text"
+              class="form-control"
+              id="kelas"
+              name="kelas"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="kontak_ortu" class="form-label">Kontak Orang Tua</label>
+            <input
+              type="text"
+              class="form-control"
+              id="kontak_ortu"
+              name="kontak_ortu"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="email_ortu" class="form-label">Email Orang Tua</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email_ortu"
+              name="email_ortu"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">
+            Simpan Data Siswa
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const token = localStorage.getItem("jwt_token");
+    if (!token) {
+      window.location.href = "/"; // Kembali ke login jika tidak ada token
+      return;
+    }
+
+    const form = document.getElementById("tambah-siswa-form");
+    const errorMessage = document.getElementById("error-message");
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault(); // Hentikan submit standar
+
+      const formData = new FormData(form);
+
+      fetch("/api/admin/siswa/tambah", {
+        method: "POST",
+        headers: {
+          // Sisipkan token di sini!
+          Authorization: "Bearer " + token,
+        },
+        body: new URLSearchParams(formData), // Kirim data sebagai form-urlencoded
+      })
+        .then((response) => {
+          if (response.redirected) {
+            // Jika server melakukan redirect (sukses atau gagal dengan pesan), ikuti
+            window.location.href = response.url;
+          } else if (!response.ok) {
+            // Jika ada error lain
+            return response.json().then((err) => Promise.reject(err));
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          errorMessage.textContent =
+            error.message || "Terjadi kesalahan tidak terduga.";
+          errorMessage.classList.remove("d-none");
+        });
+    });
+  });
+</script>
+{{end}}

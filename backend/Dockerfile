@@ -2,6 +2,9 @@
 # Kita gunakan image resmi Go sebagai "ruang perakitan" sementara.
 FROM golang:1.24-alpine AS builder
 
+ENV GOOS=linux
+ENV GOARCH=arm64
+
 # Tentukan direktori kerja di dalam kontainer
 WORKDIR /app
 
@@ -17,7 +20,7 @@ COPY . .
 # Kompilasi aplikasi Go kita.
 # CGO_ENABLED=0 membuat binary yang kompatibel dengan Alpine Linux yang minimalis.
 # -o app akan memberi nama file hasil kompilasi menjadi 'app'.
-RUN CGO_ENABLED=0 GOOS=linux go build -o app .
+RUN CGO_ENABLED=0 go build -o /app/main ./cmd/web
 
 # --- Tahap 2: Final ---
 # Kita gunakan image Alpine Linux yang sangat kecil sebagai kapsul akhir.

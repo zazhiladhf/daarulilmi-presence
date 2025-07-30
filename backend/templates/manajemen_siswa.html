@@ -1,0 +1,53 @@
+{{define "manajemen_siswa.html"}} {{template "layout_admin.html" .}} {{end}}
+{{define "title"}}Manajemen Siswa{{end}} {{define "content"}}
+<div
+  class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+>
+  <h1 class="h2">Manajemen Siswa</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <a href="/admin/siswa/tambah" class="btn btn-sm btn-primary"
+      ><i class="bi bi-plus-circle"></i> Tambah Siswa Baru</a
+    >
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>NISN</th>
+            <th>Nama Lengkap</th>
+            <th>Kelas</th>
+            <th>Kontak Ortu</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{range .Data.Siswa}}
+          <tr>
+            <td>{{.NISN}}</td>
+            <td>{{.NamaLengkap}}</td>
+            <td>{{.Kelas}}</td>
+            <td>{{.NomorTeleponOrtu}}</td>
+            <td>
+              <a href="#" class="btn btn-sm btn-warning"
+                ><i class="bi bi-pencil-square"></i
+              ></a>
+              <a href="#" class="btn btn-sm btn-danger"
+                ><i class="bi bi-trash"></i
+              ></a>
+            </td>
+          </tr>
+          {{else}}
+          <tr>
+            <td colspan="5" class="text-center">Belum ada data siswa.</td>
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{{end}}
