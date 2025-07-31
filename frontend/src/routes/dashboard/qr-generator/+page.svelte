@@ -26,7 +26,8 @@
         errorMessage = ''; // Hapus pesan error lama
 
         try {
-            const response = await fetch(`http://localhost:1412/api/qr/generate?type=${type}`, {
+            const apiUrl = import.meta.env.VITE_API_BASE_URL;
+            const response = await fetch(`${apiUrl}/api/qr/generate?type=${type}`, {
                 method: 'GET',
                 headers: { 'Authorization': 'Bearer ' + token },
                 cache: 'no-store'

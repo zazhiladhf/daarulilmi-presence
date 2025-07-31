@@ -12,7 +12,9 @@
     if (browser) {
       const token = localStorage.getItem('jwt_token');
       try {
-        const response = await fetch('http://localhost:1412/api/siswa', {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch('${apiUrl}/api/siswa', {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (!response.ok) {
@@ -40,7 +42,8 @@
     
     try {
         const token = localStorage.getItem('jwt_token');
-        const response = await fetch(`http://localhost:1412/api/siswa/${nisn}`, {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/api/siswa/${nisn}`, {
             method: 'DELETE',
             headers: { 'Authorization': 'Bearer ' + token }
         });

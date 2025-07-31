@@ -19,7 +19,8 @@
     if (browser) {
       token = localStorage.getItem('jwt_token') || '';
       try {
-        const response = await fetch(`http://localhost:1412/api/siswa/${nisn}`, {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/api/siswa/${nisn}`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (!response.ok) throw new Error('Gagal mengambil data siswa.');
@@ -39,7 +40,8 @@
     successMessage = '';
 
     try {
-      const response = await fetch(`http://localhost:1412/api/siswa/${nisn}`, {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiUrl}/api/siswa/${nisn}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

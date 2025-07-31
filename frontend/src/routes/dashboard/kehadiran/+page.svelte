@@ -16,7 +16,8 @@
     isLoading = true;
     errorMessage = '';
     try {
-      const response = await fetch(`http://localhost:1412/api/absensi/rekap/${selectedDate}?t=${new Date().getTime()}`, {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiUrl}/api/absensi/rekap/${selectedDate}?t=${new Date().getTime()}`, {
         headers: { 'Authorization': 'Bearer ' + token },
         cache: 'no-store'
       });

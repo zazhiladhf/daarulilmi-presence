@@ -37,7 +37,8 @@
       try {
         const year = new Date().getFullYear();
         const month = (new Date().getMonth() + 1).toString().padStart(2, '0');
-        const response = await fetch(`http://localhost:1412/api/portal/dashboard-data/${year}/${month}`, {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/api/portal/dashboard-data/${year}/${month}`, {
           headers: { 'Authorization': 'Bearer ' + token },
           cache: 'no-store'
         });

@@ -19,7 +19,8 @@
   async function fetchData() {
     if (!token) return;
     try {
-      const response = await fetch(`http://localhost:1412/api/statistik/bulanan/${selectedYear}/${selectedMonth}`, {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiUrl}/api/statistik/bulanan/${selectedYear}/${selectedMonth}`, {
         headers: { 'Authorization': 'Bearer ' + token },
         cache: 'no-store'
       });

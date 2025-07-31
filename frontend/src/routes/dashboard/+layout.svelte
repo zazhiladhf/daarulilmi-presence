@@ -21,7 +21,8 @@
         const username = payload.username;
         userInitials = username.charAt(0).toUpperCase();
 
-        const response = await fetch(`http://localhost:1412/api/user/profile`, {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/api/user/profile`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (!response.ok) throw new Error('Gagal mengambil profil.');

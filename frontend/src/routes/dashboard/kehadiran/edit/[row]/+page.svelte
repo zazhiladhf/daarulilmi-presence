@@ -22,7 +22,8 @@
     if (browser) {
       token = localStorage.getItem('jwt_token') || '';
       try {
-        const response = await fetch(`http://localhost:1412/api/absensi/log/${rowNumber}`, {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch(`${apiUrl}/api/absensi/log/${rowNumber}`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (!response.ok) throw new Error('Gagal mengambil data absensi.');
@@ -52,7 +53,8 @@
     const updatedTimestamp = `${tanggal} ${waktu}:00`;
 
     try {
-      const response = await fetch(`http://localhost:1412/api/absensi/log/${rowNumber}`, {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiUrl}/api/absensi/log/${rowNumber}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

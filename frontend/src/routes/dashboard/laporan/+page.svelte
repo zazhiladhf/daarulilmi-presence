@@ -23,7 +23,8 @@
     isLoading = true;
     errorMessage = '';
     try {
-      const response = await fetch(`http://localhost:1412/api/rekap?mulai=${startDate}&selesai=${endDate}`, {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiUrl}/api/rekap?mulai=${startDate}&selesai=${endDate}`, {
         headers: { 'Authorization': 'Bearer ' + token },
         cache: 'no-store'
       });

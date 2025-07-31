@@ -22,7 +22,8 @@
       errorMessage = '';
       try {
         console.log("Mencoba mengambil daftar siswa..."); // Log Debug 1
-        const response = await fetch('http://localhost:1412/api/siswa', {
+        const apiUrl = import.meta.env.VITE_API_BASE_URL;
+        const response = await fetch('${apiUrl}/api/siswa', {
           headers: { 'Authorization': 'Bearer ' + token }
         });
 
@@ -67,7 +68,8 @@
     });
 
     try {
-      const response = await fetch('http://localhost:1412/api/absensi/manual/batch', {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch('${apiUrl}/api/absensi/manual/batch', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

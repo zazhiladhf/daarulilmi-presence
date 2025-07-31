@@ -20,7 +20,8 @@
     }
 
     try {
-      const response = await fetch(`http://localhost:1412/api/dashboard-data?t=${new Date().getTime()}`, {
+      const apiUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiUrl}/api/dashboard-data?t=${new Date().getTime()}`, {
         headers: { 'Authorization': 'Bearer ' + token },
         cache: 'no-store'
       });
@@ -54,7 +55,8 @@
         if (!confirm(`Anda yakin ingin mengubah status NISN ${nisn} menjadi "${status}"?`)) return;
         
         try {
-            const response = await fetch('http://localhost:1412/api/absensi/manual', {
+            const apiUrl = import.meta.env.VITE_API_BASE_URL;
+            const response = await fetch('${apiUrl}/api/absensi/manual', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
                 body: JSON.stringify({ NISN: nisn, Status: status })
