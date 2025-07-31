@@ -12,7 +12,7 @@ services:
   # Layanan Frontend (Nginx + SvelteKit)
   frontend:
     build:
-      context: ./frontend/panel-admin # Path sekarang relatif dari root
+      context: ./frontend # Path sekarang relatif dari root
       dockerfile: Dockerfile
     restart: always
 
