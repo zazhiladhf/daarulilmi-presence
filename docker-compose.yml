@@ -1,0 +1,31 @@
+services:
+  # Layanan Backend (Aplikasi Go)
+  backend:
+    build:
+      context: ./backend # Path sekarang relatif dari root
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      # Hubungkan credentials.json dari root ke dalam container
+      - ./backend/credentials.json:/app/credentials.json
+
+  # Layanan Frontend (Nginx + SvelteKit)
+  frontend:
+    build:
+      context: ./frontend/panel-admin # Path sekarang relatif dari root
+      dockerfile: Dockerfile
+    restart: always
+
+  # Layanan Proxy (Gerbang Utama)
+  proxy:
+    image: nginx:1.25-alpine
+    restart: always
+    ports:
+      # Gunakan port 1400 di server (STB) Anda
+      - "1447:80"
+    volumes:
+      # Hubungkan file nginx.conf dari folder proxy kita
+      - ./proxy/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+      - frontend
