@@ -1,30 +1,25 @@
-# --- Tahap 1: Builder ---
-# Gunakan Node.js versi LTS (Long-Term Support)
-FROM node:20-alpine AS builder
+# Tahap 1: Build SvelteKit (dengan adapter-node)
+FROM --platform=linux/arm64 node:18-alpine AS builder
 
 WORKDIR /app
 
-# Salin file package.json dan install dependensi
-COPY package*.json ./
-RUN npm install
+COPY package.json package-lock.json* ./
+RUN npm ci
 
-# Salin sisa kode sumber aplikasi
+# ⬇️ Tambahkan ini untuk menyalin file .env
+COPY .env .env
+
 COPY . .
 
-# Jalankan perintah build untuk menghasilkan file statis
 RUN npm run build
 
-# --- Tahap 2: Server (menggunakan Nginx) ---
-FROM nginx:stable-alpine
+# Tahap 2: Runtime container
+FROM --platform=linux/arm64 node:18-alpine
 
-# Hapus konfigurasi default Nginx
-RUN rm /etc/nginx/conf.d/default.conf
+WORKDIR /app
 
-# Salin hasil build dari tahap 'builder' ke direktori web Nginx
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/node_modules ./node_modules
 
-# Port yang akan diekspos oleh Nginx
-EXPOSE 80
-
-# Perintah untuk menjalankan Nginx saat kontainer dimulai
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "build"]

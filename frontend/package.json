@@ -28,6 +28,7 @@
 	"dependencies": {
 		"@fullcalendar/core": "^6.1.18",
 		"@fullcalendar/daygrid": "^6.1.18",
+		"@sveltejs/adapter-node": "^5.2.13",
 		"apexcharts": "^5.3.1",
 		"bootstrap-icons": "^1.13.1",
 		"chart.js": "^4.5.0",
