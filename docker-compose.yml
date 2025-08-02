@@ -8,6 +8,8 @@ services:
       - "1412:1412" # Host:Container port
     networks:
       - app-network
+    volumes:
+      - ./backend/credentials.json:/app/credentials.json:ro
     restart: unless-stopped
 
   frontend:
@@ -23,7 +25,6 @@ services:
       - backend
     restart: unless-stopped
     # env_file:
-    #   - ./frontend/.env
 
 networks:
   app-network:

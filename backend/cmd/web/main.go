@@ -4,10 +4,7 @@ package main
 
 import (
 	"context"
-	"html/template"
-	"io"
 	"log"
-	"net/http"
 	"os"
 
 	"daarulilmi-presence/internal/handler"
@@ -29,15 +26,6 @@ var (
 	// ID Spreadsheet dari URL Google Sheet Anda
 	spreadsheetId = "1TFLV9ezeLt-q3uyNvArMfWwYoz5tDOGD-25zoPHXM3E"
 )
-
-// --- TEMPLATE RENDERER ---
-type Template struct {
-	templates *template.Template
-}
-
-func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	return t.templates.ExecuteTemplate(w, name, data)
-}
 
 func main() {
 	// --- SETUP KONEKSI GOOGLE SHEETS ---
@@ -68,11 +56,6 @@ func main() {
 		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization},
 	}))
 
-	templates := &Template{
-		templates: template.Must(template.ParseGlob("templates/*.html")),
-	}
-
-	e.Renderer = templates
 	// --- SETUP ROUTING ---
 	// Grup untuk rute API yang butuh login
 	apiGroup := e.Group("/api")
@@ -84,29 +67,29 @@ func main() {
 	handler.NewSiswaHandler(e, apiGroup, siswaUsecase)
 
 	// Rute Halaman Publik (tidak butuh login)
-	e.GET("/", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "login.html", nil)
-	})
-	e.GET("/register", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "register.html", map[string]interface{}{"error": c.QueryParam("error")})
-	})
-	e.GET("/forgot-password", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "forgot_password.html", nil)
-	})
-	e.GET("/reset-password", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "reset_password.html", map[string]interface{}{"token": c.QueryParam("token")})
-	})
-	e.GET("/scan", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "scanner.html", nil)
-	})
+	// e.GET("/", func(c echo.Context) error {
+	// 	return c.Render(http.StatusOK, "login.html", nil)
+	// })
+	// e.GET("/register", func(c echo.Context) error {
+	// 	return c.Render(http.StatusOK, "register.html", map[string]interface{}{"error": c.QueryParam("error")})
+	// })
+	// e.GET("/forgot-password", func(c echo.Context) error {
+	// 	return c.Render(http.StatusOK, "forgot_password.html", nil)
+	// })
+	// e.GET("/reset-password", func(c echo.Context) error {
+	// 	return c.Render(http.StatusOK, "reset_password.html", map[string]interface{}{"token": c.QueryParam("token")})
+	// })
+	// e.GET("/scan", func(c echo.Context) error {
+	// 	return c.Render(http.StatusOK, "scanner.html", nil)
+	// })
 
-	// Rute Halaman yang butuh login (keamanan ditangani oleh JS di frontend)
-	e.GET("/portal", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "portal_walimurid.html", nil)
-	})
-	e.GET("/user/update", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "update_user.html", nil)
-	})
+	// // Rute Halaman yang butuh login (keamanan ditangani oleh JS di frontend)
+	// e.GET("/portal", func(c echo.Context) error {
+	// 	return c.Render(http.StatusOK, "portal_walimurid.html", nil)
+	// })
+	// e.GET("/user/update", func(c echo.Context) error {
+	// 	return c.Render(http.StatusOK, "update_user.html", nil)
+	// })
 
 	// --- MULAI SERVER ---
 	log.Println("Server berjalan di http://localhost:1412")
