@@ -1,20 +1,32 @@
+version: "3.9"
+
 services:
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    restart: always
-    volumes:
-      - ./backend/credentials.json:/app/credentials.json
+    container_name: presence-backend
     ports:
-      # Buka port backend ke server
-      - "1412:1412"
+      - "1412:1412" # Host:Container port
+    networks:
+      - app-network
+    restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    restart: always
+    container_name: presence-frontend
     ports:
-      # Buka port frontend ke server
-      - "1413:80"
+      - "5174:3000" # Host:Container → kita pilih host port 5174 yang masih kosong
+    networks:
+      - app-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+    # env_file:
+    #   - ./frontend/.env
+
+networks:
+  app-network:
+    driver: bridge

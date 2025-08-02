@@ -1,43 +1,26 @@
-# --- Tahap 1: Builder ---
-# Kita gunakan image resmi Go sebagai "ruang perakitan" sementara.
-FROM golang:1.24-alpine AS builder
+# Tahap 1: Build binary dari Golang
+FROM --platform=linux/arm64 golang:1.21-alpine AS builder
 
-ENV GOOS=linux
-ENV GOARCH=arm64
-
-# Tentukan direktori kerja di dalam kontainer
+# Direktori kerja
 WORKDIR /app
 
-# Salin file manajemen modul terlebih dahulu untuk caching
-COPY go.mod ./
-COPY go.sum ./
-# Unduh semua dependensi
+# Salin go.mod dan go.sum untuk unduh dependen awal
+COPY go.mod go.sum ./
 RUN go mod download
 
-# Salin semua sisa kode sumber aplikasi kita
+# Salin seluruh source code (termasuk cmd/)
 COPY . .
 
-# Kompilasi aplikasi Go kita.
-# CGO_ENABLED=0 membuat binary yang kompatibel dengan Alpine Linux yang minimalis.
-# -o app akan memberi nama file hasil kompilasi menjadi 'app'.
-RUN CGO_ENABLED=0 go build -o /app/main ./cmd/web
+# Build binary dari path khusus
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o app ./cmd/web
 
-# --- Tahap 2: Final ---
-# Kita gunakan image Alpine Linux yang sangat kecil sebagai kapsul akhir.
-FROM alpine:latest
+# Tahap 2: Runtime
+FROM --platform=linux/arm64 alpine:latest
 
 WORKDIR /app
 
-# Salin HANYA file kredensial dan file template.
-# Kita tidak butuh kode Go lagi di sini, hanya hasil jadinya.
-COPY templates ./templates
-COPY credentials.json ./credentials.json
-
-# Salin file aplikasi yang sudah dikompilasi dari tahap 'builder'.
+# Salin hasil build dari tahap 1
 COPY --from=builder /app/app .
 
-# Beritahu Docker bahwa kapsul ini akan membuka port 1412.
-EXPOSE 1412
-
-# Perintah yang akan dijalankan saat kapsul ini dinyalakan.
-CMD [ "./app" ]
+# Jalankan binary
+CMD ["./app"]
