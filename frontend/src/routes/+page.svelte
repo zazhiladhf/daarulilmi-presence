@@ -49,7 +49,7 @@
         errorMessage = '';
         const apiUrl = import.meta.env.VITE_API_BASE_URL;
         try {
-            const response = await fetch('${apiUrl}/login', {
+            const response = await fetch(`${apiUrl}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',

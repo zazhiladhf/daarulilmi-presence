@@ -13,7 +13,7 @@
       const token = localStorage.getItem('jwt_token');
       try {
         const apiUrl = import.meta.env.VITE_API_BASE_URL;
-        const response = await fetch('${apiUrl}/api/siswa', {
+        const response = await fetch(`${apiUrl}/api/siswa`, {
           headers: { 'Authorization': 'Bearer ' + token }
         });
         if (!response.ok) {

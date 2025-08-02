@@ -26,7 +26,7 @@
 
 		try {
 			const apiUrl = import.meta.env.VITE_API_BASE_URL;
-			const response = await fetch('${apiUrl}/api/absensi/scan', {
+			const response = await fetch(`${apiUrl}/api/absensi/scan`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

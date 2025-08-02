@@ -56,7 +56,7 @@
         
         try {
             const apiUrl = import.meta.env.VITE_API_BASE_URL;
-            const response = await fetch('${apiUrl}/api/absensi/manual', {
+            const response = await fetch(`${apiUrl}/api/absensi/manual`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
                 body: JSON.stringify({ NISN: nisn, Status: status })

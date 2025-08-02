@@ -29,7 +29,7 @@
 
     try {
       const apiUrl = import.meta.env.VITE_API_BASE_URL;
-      const response = await fetch('${apiUrl}/api/admin/siswa/tambah', {
+      const response = await fetch(`${apiUrl}/api/admin/siswa/tambah`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // Kirim sebagai JSON
